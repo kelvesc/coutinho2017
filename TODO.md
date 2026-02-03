@@ -4,10 +4,10 @@ progress tracking here:
     [x] implement LODCT
 
 [ ] feat(core): i-mode Tensor Product Engine
-    [ ] implemt tensor operation module
+    [x] implemt tensor operation module
 
 [ ] feat(core): Modified Quantization Volume (Q∗)
-    [ ] implement quantization module
+    [x] implement quantization module
 
 [ ] feat(tracking): Visual Tracker with Subspace Representation
 

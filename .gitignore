@@ -1,0 +1,41 @@
+# --- Python / Environment ---
+venv/
+.venv/
+env/
+__pycache__/
+*.py[cod]
+*$py.class
+.ipynb_checkpoints/
+
+# --- Build / Compiled (Halide & C++ readiness) ---
+*.so
+*.o
+*.a
+*.exe
+build/
+dist/
+bin/
+
+# --- Data & Artifacts ---
+# We ignore the raw data but keep the directory structure
+data/*
+!data/.gitkeep
+
+# Ignore large video tensors or serialized numpy arrays
+*.npy
+*.npz
+*.yuv
+*.mp4
+*.avi
+
+# --- Testing & IDE ---
+.pytest_cache/
+.coverage
+htmlcov/
+.vscode/
+.idea/
+
+# --- Project Specific ---
+# Ignore the generated quantization volumes
+src/core/volumes/
+scripts

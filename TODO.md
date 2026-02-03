@@ -1,8 +1,7 @@
 progress tracking here:
-[ ] feat(core): 1D Multiplierless Matrices (MRDCT, LODCT)
-    [ ] implement MRDCT
-    [ ] implement LODCT
-    [ ] create tensor operation module
+[x] feat(core): 1D Multiplierless Matrices (MRDCT, LODCT)
+    [x] implement MRDCT
+    [x] implement LODCT
 
 [ ] feat(core): i-mode Tensor Product Engine
     [ ] implemt tensor operation module

@@ -37,3 +37,37 @@ def calculate_pbm(
     # PBM formula: 1 - min(1, dist/Th) [cite: 514, 515, 518]
     pbm = 1.0 - min(1.0, distance / th)
     return float(pbm)
+
+def calculate_psnr(original: np.ndarray, reconstructed: np.ndarray, max_val: float = 255.0) -> float:
+    """
+    Computes the Peak Signal-to-Noise Ratio (PSNR).
+    Ref: [cite: Section VI.B]
+    """
+    mse = np.mean((original - reconstructed) ** 2)
+    if mse == 0:
+        return 100.0
+    return 20 * np.log10(max_val / np.sqrt(mse))
+
+def calculate_ssim(img1: np.ndarray, img2: np.ndarray) -> float:
+    """
+    Computes a simplified Structural Similarity Index (SSIM).
+    Ref: [cite: Section VI.B]
+    Note: This is a basic implementation of the SSIM formula.
+    """
+    c1 = (0.01 * 255)**2
+    c2 = (0.03 * 255)**2
+
+    img1 = img1.astype(np.float64)
+    img2 = img2.astype(np.float64)
+
+    mu1 = np.mean(img1)
+    mu2 = np.mean(img2)
+    
+    sigma1_sq = np.var(img1)
+    sigma2_sq = np.var(img2)
+    sigma12 = np.mean((img1 - mu1) * (img2 - mu2))
+
+    num = (2 * mu1 * mu2 + c1) * (2 * sigma12 + c2)
+    den = (mu1**2 + mu2**2 + c1) * (sigma1_sq + sigma2_sq + c2)
+
+    return num / den

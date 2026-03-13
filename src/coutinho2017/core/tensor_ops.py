@@ -43,3 +43,50 @@ def transform_3d_approx(tensor: np.ndarray, method: Approximation) -> np.ndarray
     res = i_mode_product(res, S8, mode=3)
     
     return res
+
+def inverse_transform_3d_approx(tensor: np.ndarray, method: Approximation) -> np.ndarray:
+    """
+    Computes the inverse 3D Approximate DCT.
+    T ≈ Y x1 (TN^T * SN) x2 (TN^T * SN) x3 (TN^T * SN)
+    Ref: [cite: 199, 216, 217]
+    """
+    T8 = method.get_T8()
+    S8 = method.get_S8()
+    
+    # Inverse of C = S8 * T8 is C^T = T8^T * S8 (assuming orthogonality)
+    # Apply S8 scaling first
+    res = i_mode_product(tensor, S8, mode=1)
+    res = i_mode_product(res, S8, mode=2)
+    res = i_mode_product(res, S8, mode=3)
+    
+    # Apply T8^T
+    T8_T = T8.T
+    res = i_mode_product(res, T8_T, mode=1)
+    res = i_mode_product(res, T8_T, mode=2)
+    res = i_mode_product(res, T8_T, mode=3)
+    
+    return res
+
+def discard_coefficients(tensor: np.ndarray, keep_ratio: float) -> np.ndarray:
+    """
+    Retains only a fraction of the coefficients with the largest magnitudes.
+    Ref: [cite: Section VI.B]
+    """
+    if keep_ratio >= 1.0:
+        return tensor
+    if keep_ratio <= 0.0:
+        return np.zeros_like(tensor)
+        
+    flat = tensor.flatten()
+    abs_flat = np.abs(flat)
+    num_keep = int(len(flat) * keep_ratio)
+    
+    if num_keep == 0:
+        return np.zeros_like(tensor)
+        
+    # Find the threshold magnitude using partition for efficiency
+    threshold = np.partition(abs_flat, -num_keep)[-num_keep]
+    
+    # Apply threshold
+    mask = np.abs(tensor) >= threshold
+    return tensor * mask

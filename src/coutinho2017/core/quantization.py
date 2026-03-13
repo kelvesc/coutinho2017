@@ -31,6 +31,16 @@ def quantize_3d(
     """
     return np.round(transformed_tensor / modified_q_volume).astype(np.int32)
 
+def dequantize_3d(
+    quantized_tensor: np.ndarray,
+    modified_q_volume: np.ndarray
+) -> np.ndarray:
+    """
+    Reverses the quantization step.
+    Ref: [cite: 346]
+    """
+    return (quantized_tensor * modified_q_volume).astype(np.float64)
+
 def generate_base_3d_q_volume(N: int = 8, quality: float = 50.0) -> np.ndarray:
     """
     Generates a basic 3D quantization volume based on Euclidean distance.

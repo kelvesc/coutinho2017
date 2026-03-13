@@ -1,6 +1,6 @@
 import numpy as np
 from scipy.fft import dct
-from src.coutinho2017.core.approximations import MRDCT8 as MRDCT, LODCT8 as LODCT
+from coutinho2017.core.approximations import MRDCT, LODCT
 from typing import Dict, Type
 
 def run_benchmarks() -> None:
@@ -15,7 +15,7 @@ def run_benchmarks() -> None:
     
     # 3. Métodos de Aproximação (Coutinho 2017)
     # Instanciamos as classes que seguem o Protocol Approximation
-    methods: Dict[str, Approximation] = {
+    methods = {
         "MRDCT": MRDCT(),
         "LODCT": LODCT()
     }

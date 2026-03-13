@@ -47,17 +47,26 @@ pip install -e .[test]
 ```
 
 ### 2. Running Tests
-Verify the mathematical integrity of the approximations:
+Verify the mathematical integrity and compression performance:
 ```bash
+# Run all tests
 pytest tests/
+
+# Run specific compression tests
+pytest tests/test_compression.py
 ```
 
 ### 3. Running Benchmarks
-Evaluate energy compaction and tracking efficiency:
+Evaluate energy compaction, tracking efficiency, and compression performance:
 
 **Energy Compaction (1D & 3D):**
 ```bash
 python benchmarks/compaction_benchmark.py
+```
+
+**Compression Performance (PSNR/SSIM):**
+```bash
+python benchmarks/compression_performance.py
 ```
 
 **Tracking Efficiency:**
@@ -67,14 +76,13 @@ python benchmarks/tracking_efficiency.py
 *Note: If `data/animal.mp4` is not present, the benchmark will automatically generate synthetic video data to evaluate the tracker's accuracy.*
 
 ## Implementation Details
-The project is approximately **55% complete**. Currently supported features:
-- **MRDCT (Modified Rounded DCT):** 14 additions, high energy compaction.
-- **LODCT (Low-Order DCT):** Optimized for low-order coefficient accuracy.
-- **3D i-mode Engine:** Successive application of 1D transforms across tensor modes.
+The project is approximately **70% complete**. Currently supported features:
+- **Core Matrices:** MRDCT, LODCT, BAS-2008, and CB-2011 (Table I) implemented.
+- **3D i-mode Engine:** Forward and **Inverse** 3D approximate transforms.
 - **Subspace Tracker:** Using 3D DCT coefficients as features for robust visual tracking (PBM metric implemented).
+- **Compression Pipeline:** Coefficient discarding (thresholding) and reconstruction.
 - **Modified Quantization:** Embedding scaling factors into the $Q$ volume to maintain multiplierless transforms.
 
 **In Progress:**
-- **BAS and CB-2011 Matrices:** Implementation of remaining Table I matrices.
-- **Inverse 3D Transform:** Required for full video compression reproduction.
-- **Formal Complexity Analysis:** Automated operation counting and verification.
+- **Formal Complexity Analysis:** Automated operation counting and verification of the "zero-multiplication" property.
+- **Full Sequence Reproduction:** PSNR/SSIM evaluation on standard CIF sequences (Foreman, Mother-daughter).

@@ -1,7 +1,49 @@
 import numpy as np
-from src.core.tensor_ops import i_mode_product
-from src.core.approximations import get_lodct_T8, get_lodct_S8
-from src.core.quantization import generate_base_3d_q_volume, generate_modified_q_volume
+
+from src.coutinho2017.core.tensor_ops import i_mode_product
+from src.coutinho2017.core.approximations import get_lodct_T8, get_lodct_S8
+from src.coutinho2017.core.quantization import generate_base_3d_q_volume, generate_modified_q_volume
+
+from src.coutinho2017.tracking.tracker import DCTTracker
+from src.coutinho2017.utils.video_io import load_video_sequence
+from src.coutinho2017.utils.metrics import calculate_pbm
+
+def evaluate_tracking_performance():
+    tracker = DCTTracker()
+    # Mock data: sequence of 10 frames and ground truth boxes
+    # In practice, these come from your dataset [cite: 512, 1001]
+    mock_bboxes = [(10+i, 10+i, 8, 8) for i in range(10)]
+    
+    pbm_scores = []
+    
+    # Simulate tracking over frames
+    for i, gt_box in enumerate(mock_bboxes):
+        # ... (extract patch, update tracker) ...
+        # Assume tracked_box is returned by find_target()
+        tracked_box = gt_box # For demonstration
+        
+        score = calculate_pbm(tracked_box, gt_box)
+        pbm_scores.append(score)
+        
+    avg_pbm = np.mean(pbm_scores)
+    print(f"Average PBM (Coutinho Implementation): {avg_pbm:.4f}") #[cite: 718]
+
+def run_reproduction_sprint():
+    # Caminho para o vídeo (ex: data/animal.mp4)
+    video_data = load_video_sequence("data/animal.mp4")
+    print(f"Vídeo carregado: {video_data.shape}") # Esperado: (288, 352, 296) 
+    
+    tracker = DCTTracker(buffer_size=8)
+    # Posição inicial hipotética do alvo (bounding box)
+    current_bbox = (150, 100, 8, 8) 
+    
+    # Simulação de rastreamento frame a frame
+    for f in range(video_data.shape[2]):
+        frame = video_data[:, :, f]
+        # Aqui integraria a lógica de find_target e add_observation
+        # ...
+    
+    print("Processamento concluído.")
 
 def run_pipeline() -> None:
     # 1. Setup: Create a dummy 8x8x8 video block (tensor T)

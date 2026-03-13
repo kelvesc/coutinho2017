@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=64.0.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "coutinho2017"
+requires-python = ">=3.10"
+version = "0.1.0"
+description = "A Python implementation of Coutinho's 2017 Low-Complexity Multidimensional DCT Approximations for High-Order Tensor Data Decorrelation "
+authors = [
+    { name = "Kelves Costa", email = "kelevs.nunes@ufrpe.br" }
+]
+maintainers = [
+    { name = "Kelves Costa", email = "kelevs.nunes@ufrpe.br" }
+]
+keywords = ["python", "visual tracking", "3ddct", "3didct"]
+readme = "README.md"
+license = "MIT"
+dependencies = [
+"numpy>=1.20.0",    # For tensor operations and i-mode products
+"opencv-python",    # For video processing and tracking visualization
+"scipy",            # For the baseline exact DCT comparison
+"matplotlib",       # For plotting PBM and PSNR results
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest",
+    "pytest-benchmark",
+    "pytest-cov",
+]
+
+[project.urls]
+Repository = "https://github.com/kelvesc/coutinho2017"
+
+[tool.pytest.ini_options]
+testpaths = [
+    "tests",
+    "benchmarks"
+]
+python_files = ["test_*.py", "*_test.py", "check_*.py"]
+python_functions = ["test_*"]
+
+[tool.setuptools]
+#package-dir = {"" = "."}
+package-dir = {"" = "src"}

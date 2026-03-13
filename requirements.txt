@@ -1,4 +1,0 @@
-numpy>=1.20.0    # For tensor operations and i-mode products
-opencv-python    # For video processing and tracking visualization
-scipy            # For the baseline exact DCT comparison
-matplotlib       # For plotting PBM and PSNR results

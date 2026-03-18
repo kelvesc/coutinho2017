@@ -6,9 +6,8 @@ from coutinho2017.utils.video_io import load_video_sequence
 from coutinho2017.tracking.tracker import DCTTracker
 from coutinho2017.utils.metrics import calculate_pbm
 
-def run_benchmark():
+def run_benchmark(video_path: str = "data/animal.mp4"):
     # 1. Carregar dados reais ou sintéticos
-    video_path = "data/animal.mp4"
     if os.path.exists(video_path):
         video_data = load_video_sequence(video_path)
     else:

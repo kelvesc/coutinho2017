@@ -1,26 +1,38 @@
+import os
 import numpy as np
 from scipy.fft import dctn, idctn
 from coutinho2017.core.tensor_ops import transform_3d_approx, inverse_transform_3d_approx, discard_coefficients
 from coutinho2017.core.approximations import MRDCT, LODCT, BAS2008, CB2011
 from coutinho2017.utils.metrics import calculate_psnr, calculate_ssim
 
-def run_compression_benchmark():
+def run_compression_benchmark(video_path: str = None):
     """
     Evaluates the compression performance of different DCT approximations.
     Simulates Section VI.B of Coutinho et al. 2017.
     """
-    # 1. Create a synthetic 3D video cube (8x8x8)
-    # Using a correlated signal model: x[i,j,k] = rho^(i+j+k)
-    N = 8
-    rho = 0.95
-    video_cube = np.zeros((N, N, N))
-    for i in range(N):
-        for j in range(N):
-            for k in range(N):
-                video_cube[i, j, k] = rho**(i + j + k)
-    
-    # Scale to 0-255 range
-    video_cube = video_cube * 255.0
+    if video_path and os.path.exists(video_path):
+        from coutinho2017.utils.video_io import load_video_sequence, get_video_blocks
+        video_data = load_video_sequence(video_path)
+        # Extract the first available 8x8x8 block for the benchmark
+        blocks = get_video_blocks(video_data, block_size=8)
+        try:
+            video_cube = next(blocks).astype(float)
+        except StopIteration:
+            print(f"Error: Video {video_path} is too small for an 8x8x8 block.")
+            return
+    else:
+        # 1. Create a synthetic 3D video cube (8x8x8)
+        # Using a correlated signal model: x[i,j,k] = rho^(i+j+k)
+        N = 8
+        rho = 0.95
+        video_cube = np.zeros((N, N, N))
+        for i in range(N):
+            for j in range(N):
+                for k in range(N):
+                    video_cube[i, j, k] = rho**(i + j + k)
+        
+        # Scale to 0-255 range
+        video_cube = video_cube * 255.0
 
     methods = {
         "MRDCT": MRDCT(),
